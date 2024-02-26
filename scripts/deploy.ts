@@ -1,12 +1,13 @@
 // scripts/deploy-and-interact.ts
 import { ethers } from 'hardhat';
 
-async function main(): Promise<void> {
+async function main() {
   const TokenFactory = await ethers.getContractFactory("TokenFactory");
   const tokenFactory = await TokenFactory.deploy();
-  await tokenFactory.deployed();
+  
+  await tokenFactory.waitForDeployment();
 
-  console.log("TokenFactory deployed to:", tokenFactory.address);
+  console.log("TokenFactory deployed to:", tokenFactory.target);
 
   // Create a new token
   const tx = await tokenFactory.createToken("MyNewToken", "MNT", 1000000);
@@ -20,4 +21,4 @@ main()
   .catch(error => {
     console.error(error);
     process.exit(1);
-  });
+  })
